@@ -1,0 +1,74 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://idle/idleL.gd" type="Script" id=2]
+[ext_resource path="res://seta1.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 28.25, 8.5 )
+
+[sub_resource type="Animation" id=5]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("idle:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 10 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "bad"
+tracks/0/type = "value"
+tracks/0/path = NodePath("idle:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 5, 0 ), Vector2( -5, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "good"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/path = NodePath("idle:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 10 ), Vector2( 0, 0 ) ]
+}
+
+[node name="idleL" type="Area2D"]
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 8 )
+shape = SubResource( 4 )
+
+[node name="idle" type="Sprite" parent="."]
+position = Vector2( 0, 10 )
+rotation = 3.14159
+scale = Vector2( 0.018, 0.018 )
+texture = ExtResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 5 )
+anims/bad = SubResource( 6 )
+anims/good = SubResource( 7 )
+
+[connection signal="area_shape_entered" from="." to="." method="_on_idleL_area_shape_entered"]
+[connection signal="area_shape_exited" from="." to="." method="_on_idleL_area_shape_exited"]

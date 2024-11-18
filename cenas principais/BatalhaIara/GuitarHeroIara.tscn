@@ -1,0 +1,77 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://cenas principais/BatalhaIara/ArrowButton.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Frames/arrow_left_frames.tres" type="SpriteFrames" id=2]
+[ext_resource path="res://Frames/arrow_right_frames.tres" type="SpriteFrames" id=3]
+[ext_resource path="res://cenas principais/BatalhaIara/pista sensual.png" type="Texture" id=4]
+[ext_resource path="res://Sounds/musica rock pauleira mais assustador de todos os tempos.wav" type="AudioStream" id=5]
+[ext_resource path="res://Scripts/Game.gd" type="Script" id=6]
+[ext_resource path="res://Fonts/heartbit2x.tres" type="DynamicFont" id=7]
+[ext_resource path="res://cenas principais/BatalhaIara/Conductor.tscn" type="PackedScene" id=8]
+[ext_resource path="res://cenas principais/BatalhaIara/BackGroundIara.tscn" type="PackedScene" id=9]
+
+[node name="Game" type="Node2D"]
+position = Vector2( -79, 41 )
+script = ExtResource( 6 )
+
+[node name="GuitarHero" parent="." instance=ExtResource( 9 )]
+position = Vector2( 78, -10 )
+scale = Vector2( 0.318075, 0.318075 )
+
+[node name="PistaSensual" type="Sprite" parent="."]
+position = Vector2( 152, 45 )
+scale = Vector2( 0.0725926, 0.117826 )
+texture = ExtResource( 4 )
+
+[node name="ArrowUp" parent="." instance=ExtResource( 1 )]
+position = Vector2( 160, 160 )
+input = "up"
+
+[node name="ArrowLeft" parent="." instance=ExtResource( 1 )]
+position = Vector2( 120, 160 )
+frames = ExtResource( 2 )
+input = "left"
+
+[node name="ArrowButton" parent="." instance=ExtResource( 1 )]
+position = Vector2( 200, 160 )
+frames = ExtResource( 3 )
+input = "right"
+
+[node name="Label" type="Label" parent="."]
+margin_left = 267.0
+margin_top = 148.0
+margin_right = 307.0
+margin_bottom = 162.0
+custom_colors/font_color = Color( 0.964706, 0.839216, 0.741176, 1 )
+custom_fonts/font = ExtResource( 7 )
+text = "0"
+
+[node name="Combo" type="Label" parent="."]
+margin_left = 245.0
+margin_top = 165.0
+margin_right = 337.0
+margin_bottom = 179.0
+custom_colors/font_color = Color( 0.964706, 0.839216, 0.741176, 1 )
+custom_fonts/font = ExtResource( 7 )
+align = 1
+
+[node name="Conductor" parent="." instance=ExtResource( 8 )]
+stream = ExtResource( 5 )
+volume_db = -15.0
+bpm = 136
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 165.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.491, 0.47 )
+limit_left = 1
+limit_top = 43
+limit_right = 327
+limit_bottom = 223
+smoothing_enabled = true
+editor_draw_limits = true
+
+[connection signal="beat" from="Conductor" to="." method="_on_Conductor_beat"]
+[connection signal="measure" from="Conductor" to="." method="_on_Conductor_measure"]

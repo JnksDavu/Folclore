@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://componentes de jogo/interacoes.tscn" type="PackedScene" id=3]
+[ext_resource path="res://secundarios/Control.tscn" type="PackedScene" id=4]
+[ext_resource path="res://secundarios/Node2D.gd" type="Script" id=5]
+[ext_resource path="res://Personagens/homem do saco/abcff0c8d5c71c9d44ff54c7ae9ffedd.png" type="Texture" id=6]
+
+[node name="Mundo" type="Node2D"]
+position = Vector2( -1, 0 )
+script = ExtResource( 5 )
+
+[node name="YSort" type="YSort" parent="."]
+
+[node name="Player" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( 137, 64 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Camera2D" type="Camera2D" parent="YSort/Player"]
+current = true
+limit_smoothed = true
+smoothing_enabled = true
+smoothing_speed = 8.0
+editor_draw_screen = false
+
+[node name="Dialogo" type="CanvasLayer" parent="YSort/Player"]
+
+[node name="dialogo" parent="YSort/Player/Dialogo" instance=ExtResource( 4 )]
+visible = false
+
+[node name="interacoes" parent="YSort" instance=ExtResource( 3 )]
+position = Vector2( 89, 64 )
+interact_label = "E"
+interact_type = "fala"
+interact_value = ""
+
+[node name="Sprite" type="Sprite" parent="YSort/interacoes"]
+position = Vector2( 136, 56 )
+scale = Vector2( 0.161133, 0.172852 )
+texture = ExtResource( 6 )

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Personagens/homem do saco/abcff0c8d5c71c9d44ff54c7ae9ffedd.png" type="Texture" id=1]
+[ext_resource path="res://secundarios/Control.tscn" type="PackedScene" id=2]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="dialogo" parent="CanvasLayer" instance=ExtResource( 2 )]
+
+[node name="Sprite" type="Sprite" parent="CanvasLayer/dialogo"]
+position = Vector2( 249, 94 )
+scale = Vector2( 0.509766, 0.658203 )
+texture = ExtResource( 1 )

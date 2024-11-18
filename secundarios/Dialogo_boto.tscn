@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://addons/dialogue_nodes/objects/dialogueBox.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogue_nodes/objects/bbcodeWait.gd" type="Script" id=2]
+[ext_resource path="res://secundarios/Thema Dialogos.tres" type="Theme" id=3]
+[ext_resource path="res://imgs/Menino principal/MeninoPrincipal.png" type="Texture" id=4]
+[ext_resource path="res://imgs/Boto.png" type="Texture" id=5]
+[ext_resource path="res://secundarios/Dialogo_boto.gd" type="Script" id=6]
+
+[sub_resource type="RichTextEffect" id=1]
+script = ExtResource( 2 )
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 6 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_left = 0.527
+anchor_top = 0.597
+anchor_right = 0.527
+anchor_bottom = 0.597
+margin_left = -307.82
+margin_top = -186.86
+margin_right = -307.82
+margin_bottom = -186.86
+
+[node name="DialogueBox" type="PopupDialog" parent="TextureRect"]
+visible = true
+margin_left = 70.0
+margin_top = 227.0
+margin_right = 493.0
+margin_bottom = 328.0
+rect_min_size = Vector2( 300, 72 )
+theme = ExtResource( 3 )
+popup_exclusive = true
+script = ExtResource( 1 )
+dialogue_file = "res://addons/Iara.json"
+start_id = "Boto"
+max_options = 2
+custom_effects = [ SubResource( 1 ) ]
+
+[node name="Sprite" type="Sprite" parent="TextureRect/DialogueBox"]
+position = Vector2( 53, -75 )
+scale = Vector2( 0.148291, 0.141667 )
+texture = ExtResource( 4 )
+
+[node name="Sprite2" type="Sprite" parent="TextureRect/DialogueBox"]
+position = Vector2( 343, -59 )
+scale = Vector2( 0.108966, 0.114152 )
+texture = ExtResource( 5 )
+
+[connection signal="dialogue_ended" from="TextureRect/DialogueBox" to="." method="_on_DialogueBox_dialogue_ended"]

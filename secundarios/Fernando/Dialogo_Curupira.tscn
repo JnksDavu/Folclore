@@ -1,0 +1,58 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://addons/dialogue_nodes/objects/dialogueBox.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogue_nodes/objects/bbcodeWait.gd" type="Script" id=2]
+[ext_resource path="res://secundarios/Thema Dialogos.tres" type="Theme" id=3]
+[ext_resource path="res://imgs/Curupira.png" type="Texture" id=4]
+[ext_resource path="res://imgs/Menino principal/MeninoPrincipal.png" type="Texture" id=5]
+[ext_resource path="res://secundarios/Dialogo_Curupira.gd" type="Script" id=6]
+
+[sub_resource type="RichTextEffect" id=1]
+script = ExtResource( 2 )
+
+[node name="Dialogo_Curupira" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -63.0
+script = ExtResource( 6 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_left = 0.457
+anchor_top = 0.759
+anchor_right = 0.457
+anchor_bottom = 0.759
+margin_left = -22.62
+margin_top = -37.603
+margin_right = 17.38
+margin_bottom = -23.603
+
+[node name="DialogueBox" type="PopupDialog" parent="TextureRect"]
+visible = true
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -183.0
+margin_top = 50.0
+margin_right = 240.0
+margin_bottom = 151.0
+rect_min_size = Vector2( 300, 72 )
+theme = ExtResource( 3 )
+popup_exclusive = true
+script = ExtResource( 1 )
+dialogue_file = "res://addons/Curapika.json"
+start_id = "Cu"
+max_options = 2
+custom_effects = [ SubResource( 1 ) ]
+
+[node name="Sprite" type="Sprite" parent="TextureRect/DialogueBox"]
+position = Vector2( 336, -54 )
+scale = Vector2( 0.110338, 0.108593 )
+texture = ExtResource( 4 )
+
+[node name="Sprite2" type="Sprite" parent="TextureRect/DialogueBox"]
+position = Vector2( 55.9999, -67 )
+scale = Vector2( 0.13258, 0.128241 )
+texture = ExtResource( 5 )
+
+[connection signal="dialogue_ended" from="TextureRect/DialogueBox" to="." method="_on_DialogueBox_dialogue_ended"]

@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://cenas principais/Personagem.gd" type="Script" id=1]
+[ext_resource path="res://cenas principais/Sprite.gd" type="Script" id=2]
+
+[node name="Personagem" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="container_personagens" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="container_personagens"]
+script = ExtResource( 2 )

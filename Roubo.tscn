@@ -1,0 +1,82 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://imgs/pai.png" type="Texture" id=1]
+[ext_resource path="res://imgs/Mãe.png" type="Texture" id=2]
+[ext_resource path="res://imgs/Tornas.png" type="Texture" id=3]
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("TORNAS:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 419, 209 ) ]
+}
+
+[sub_resource type="Animation" id=1]
+resource_name = "Roubo"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("MAE:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.9, 2.7, 4.301, 5.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 359, 292 ), Vector2( 361.889, 290.111 ), Vector2( 409, 291 ), Vector2( 427, 288 ), Vector2( 441, 165 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("PAE:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 2.7, 4.301, 5.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 409, 292 ), Vector2( 409, 291 ), Vector2( 427, 288 ), Vector2( 441, 165 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("TORNAS:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 2.7, 4.3, 5.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 250, 288 ), Vector2( 409, 291 ), Vector2( 427, 288 ), Vector2( 441, 165 ) ]
+}
+
+[node name="Roubo" type="Node2D"]
+position = Vector2( 1, -1 )
+
+[node name="MAE" type="Sprite" parent="."]
+position = Vector2( 359, 292 )
+texture = ExtResource( 2 )
+hframes = 2
+
+[node name="PAE" type="Sprite" parent="."]
+position = Vector2( 409, 292 )
+texture = ExtResource( 1 )
+hframes = 2
+
+[node name="TORNAS" type="Sprite" parent="."]
+position = Vector2( 419, 209 )
+scale = Vector2( 0.019848, 0.0247044 )
+texture = ExtResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 2 )
+anims/Roubo = SubResource( 1 )

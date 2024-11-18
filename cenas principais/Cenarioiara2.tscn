@@ -1,0 +1,1097 @@
+[gd_scene load_steps=28 format=2]
+
+[ext_resource path="res://cenas principais/TesteCachoeira.gd" type="Script" id=1]
+[ext_resource path="res://Player/New_Sprite.png" type="Texture" id=2]
+[ext_resource path="res://componentes de jogo/interacoes.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets_exterior/Assets_Cenario_Iara/RockPack128x128.png" type="Texture" id=4]
+[ext_resource path="res://Personagens/BotoPelado.png" type="Texture" id=5]
+[ext_resource path="res://Assets_exterior/Assets_Cenario_Iara/iara.png" type="Texture" id=6]
+[ext_resource path="res://Assets_exterior/Assets_Cenario_Iara/CasaLago.png" type="Texture" id=7]
+[ext_resource path="res://Assets_exterior/Assets_Cenario_Iara/raboIara.png" type="Texture" id=8]
+[ext_resource path="res://Assets_exterior/Assets_Cenario_Iara/336x330.png" type="Texture" id=9]
+[ext_resource path="res://Player/Boto.png" type="Texture" id=10]
+[ext_resource path="res://Assets_exterior/Cachoeira/Lagoa.jpg" type="Texture" id=11]
+[ext_resource path="res://icon.png" type="Texture" id=12]
+[ext_resource path="res://cenas principais/Cenarioiara2.gd" type="Script" id=13]
+[ext_resource path="res://secundarios/Dialogo_Iara.tscn" type="PackedScene" id=14]
+
+[sub_resource type="Shader" id=36]
+code = "shader_type canvas_item;
+uniform int OCTAVE = 6;
+uniform float mulscale = 5.0;
+uniform float height = 0.6;
+uniform float tide = 0.1;
+uniform float foamthickness = 0.1;
+uniform float timescale = 1.0;
+uniform float waterdeep = 0.3;
+uniform vec4 WATER_COL : hint_color =  vec4(0.04, 0.38, 0.88, 1.0);
+uniform vec4 WATER2_COL : hint_color =  vec4(0.04, 0.35, 0.78, 1.0);
+uniform vec4 FOAM_COL : hint_color = vec4(0.8125, 0.9609, 0.9648, 1.0);
+
+
+float rand(vec2 input){
+	return fract(sin(dot(input,vec2(23.53,44.0)))*42350.45);
+}
+
+float perlin(vec2 input){
+	vec2 i = floor(input);
+	vec2 j = fract(input);
+	vec2 coord = smoothstep(0.,1.,j);
+	
+	float a = rand(i);
+	float b = rand(i+vec2(1.0,0.0));
+	float c = rand(i+vec2(0.0,1.0));
+	float d = rand(i+vec2(1.0,1.0));
+
+	return mix(mix(a,b,coord.x),mix(c,d,coord.x),coord.y);
+}
+
+float fbm(vec2 input){
+	float value = 0.0;
+	float scale = 0.5;
+	
+	for(int i = 0; i < OCTAVE; i++){
+		value += perlin(input)*scale;
+		input*=2.0;
+		scale*=0.5;
+	}
+	return value;
+}
+
+void fragment(){
+	float newtime = TIME*timescale;
+	float fbmval = fbm(vec2(UV.x*mulscale+0.2*sin(0.3*newtime)+0.15*newtime,-0.05*newtime+UV.y*mulscale+0.1*cos(0.68*newtime)));
+	float fbmvalshadow = fbm(vec2(UV.x*mulscale+0.2*sin(-0.6*newtime + 25.0 * UV.y)+0.15*newtime+3.0,-0.05*newtime+UV.y*mulscale+0.13*cos(-0.68*newtime))-7.0+0.1*sin(0.43*newtime));
+	float myheight = height+tide*sin(newtime+5.0*UV.x-8.0*UV.y);
+	float shadowheight = height+tide*1.3*cos(newtime+2.0*UV.x-2.0*UV.y);
+	float withinFoam = step(myheight, fbmval)*step(fbmval, myheight + foamthickness);
+	float shadow = (1.0-withinFoam)*step(shadowheight, fbmvalshadow)*step(fbmvalshadow, shadowheight + foamthickness * 0.7);
+	COLOR = withinFoam*FOAM_COL + shadow*WATER2_COL + ((1.0-withinFoam)*(1.0-shadow))*WATER_COL;
+	//COLOR = vec4(1.0,1.0,1.0,fbmval);
+}
+
+
+"
+
+[sub_resource type="ShaderMaterial" id=41]
+shader = SubResource( 36 )
+shader_param/OCTAVE = 2
+shader_param/mulscale = 34.94
+shader_param/height = 0.65
+shader_param/tide = 0.098
+shader_param/foamthickness = 0.089
+shader_param/timescale = -0.981
+shader_param/waterdeep = 4.049
+shader_param/WATER_COL = Color( 0.04, 0.38, 0.88, 1 )
+shader_param/WATER2_COL = Color( 0.04, 0.35, 0.78, 1 )
+shader_param/FOAM_COL = Color( 0.8125, 0.9609, 0.9648, 1 )
+
+[sub_resource type="TileSet" id=42]
+0/name = "RockPack128x128.png 0"
+0/texture = ExtResource( 4 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 3, 17, 12 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
+1/name = "RockPack128x128.png 1"
+1/texture = ExtResource( 4 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 19, 5, 15, 12 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0
+2/name = "RockPack128x128.png 2"
+2/texture = ExtResource( 4 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 1 )
+2/region = Rect2( 37, 4, 18, 14 )
+2/tile_mode = 0
+2/occluder_offset = Vector2( 0, 0 )
+2/navigation_offset = Vector2( 0, 0 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape_one_way = false
+2/shape_one_way_margin = 0.0
+2/shapes = [  ]
+2/z_index = 0
+5/name = "RockPack128x128.png 5"
+5/texture = ExtResource( 4 )
+5/tex_offset = Vector2( 0, 0 )
+5/modulate = Color( 1, 1, 1, 1 )
+5/region = Rect2( 1, 23, 22, 13 )
+5/tile_mode = 0
+5/occluder_offset = Vector2( 0, 0 )
+5/navigation_offset = Vector2( 0, 0 )
+5/shape_offset = Vector2( 0, 0 )
+5/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+5/shape_one_way = false
+5/shape_one_way_margin = 0.0
+5/shapes = [  ]
+5/z_index = 0
+6/name = "RockPack128x128.png 6"
+6/texture = ExtResource( 4 )
+6/tex_offset = Vector2( 0, 0 )
+6/modulate = Color( 1, 1, 1, 1 )
+6/region = Rect2( 28, 23, 23, 15 )
+6/tile_mode = 0
+6/occluder_offset = Vector2( 0, 0 )
+6/navigation_offset = Vector2( 0, 0 )
+6/shape_offset = Vector2( 0, 0 )
+6/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+6/shape_one_way = false
+6/shape_one_way_margin = 0.0
+6/shapes = [  ]
+6/z_index = 0
+7/name = "RockPack128x128.png 7"
+7/texture = ExtResource( 4 )
+7/tex_offset = Vector2( 0, 0 )
+7/modulate = Color( 1, 1, 1, 1 )
+7/region = Rect2( 54, 34, 26, 20 )
+7/tile_mode = 0
+7/occluder_offset = Vector2( 0, 0 )
+7/navigation_offset = Vector2( 0, 0 )
+7/shape_offset = Vector2( 0, 0 )
+7/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+7/shape_one_way = false
+7/shape_one_way_margin = 0.0
+7/shapes = [  ]
+7/z_index = 0
+8/name = "RockPack128x128.png 8"
+8/texture = ExtResource( 4 )
+8/tex_offset = Vector2( 0, 0 )
+8/modulate = Color( 1, 1, 1, 1 )
+8/region = Rect2( 84, 36, 16, 14 )
+8/tile_mode = 0
+8/occluder_offset = Vector2( 0, 0 )
+8/navigation_offset = Vector2( 0, 0 )
+8/shape_offset = Vector2( 0, 0 )
+8/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+8/shape_one_way = false
+8/shape_one_way_margin = 0.0
+8/shapes = [  ]
+8/z_index = 0
+9/name = "RockPack128x128.png 9"
+9/texture = ExtResource( 4 )
+9/tex_offset = Vector2( 0, 0 )
+9/modulate = Color( 1, 1, 1, 1 )
+9/region = Rect2( 101, 35, 28, 16 )
+9/tile_mode = 0
+9/occluder_offset = Vector2( 0, 0 )
+9/navigation_offset = Vector2( 0, 0 )
+9/shape_offset = Vector2( 0, 0 )
+9/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+9/shape_one_way = false
+9/shape_one_way_margin = 0.0
+9/shapes = [  ]
+9/z_index = 0
+10/name = "RockPack128x128.png 10"
+10/texture = ExtResource( 4 )
+10/tex_offset = Vector2( 0, 0 )
+10/modulate = Color( 1, 1, 1, 1 )
+10/region = Rect2( 105, 89, 19, 11 )
+10/tile_mode = 0
+10/occluder_offset = Vector2( 0, 0 )
+10/navigation_offset = Vector2( 0, 0 )
+10/shape_offset = Vector2( 0, 0 )
+10/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+10/shape_one_way = false
+10/shape_one_way_margin = 0.0
+10/shapes = [  ]
+10/z_index = 0
+11/name = "RockPack128x128.png 11"
+11/texture = ExtResource( 4 )
+11/tex_offset = Vector2( 0, 0 )
+11/modulate = Color( 1, 1, 1, 1 )
+11/region = Rect2( 108, 107, 20, 17 )
+11/tile_mode = 0
+11/occluder_offset = Vector2( 0, 0 )
+11/navigation_offset = Vector2( 0, 0 )
+11/shape_offset = Vector2( 0, 0 )
+11/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+11/shape_one_way = false
+11/shape_one_way_margin = 0.0
+11/shapes = [  ]
+11/z_index = 0
+12/name = "RockPack128x128.png 12"
+12/texture = ExtResource( 4 )
+12/tex_offset = Vector2( 0, 0 )
+12/modulate = Color( 1, 1, 1, 1 )
+12/region = Rect2( 63, 63, 33, 20 )
+12/tile_mode = 0
+12/occluder_offset = Vector2( 0, 0 )
+12/navigation_offset = Vector2( 0, 0 )
+12/shape_offset = Vector2( 0, 0 )
+12/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+12/shape_one_way = false
+12/shape_one_way_margin = 0.0
+12/shapes = [  ]
+12/z_index = 0
+13/name = "RockPack128x128.png 13"
+13/texture = ExtResource( 4 )
+13/tex_offset = Vector2( 0, 0 )
+13/modulate = Color( 1, 1, 1, 1 )
+13/region = Rect2( 99, 61, 25, 22 )
+13/tile_mode = 0
+13/occluder_offset = Vector2( 0, 0 )
+13/navigation_offset = Vector2( 0, 0 )
+13/shape_offset = Vector2( 0, 0 )
+13/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+13/shape_one_way = false
+13/shape_one_way_margin = 0.0
+13/shapes = [  ]
+13/z_index = 0
+14/name = "RockPack128x128.png 14"
+14/texture = ExtResource( 4 )
+14/tex_offset = Vector2( 0, 0 )
+14/modulate = Color( 1, 1, 1, 1 )
+14/region = Rect2( 50, 91, 24, 30 )
+14/tile_mode = 0
+14/occluder_offset = Vector2( 0, 0 )
+14/navigation_offset = Vector2( 0, 0 )
+14/shape_offset = Vector2( 0, 0 )
+14/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+14/shape_one_way = false
+14/shape_one_way_margin = 0.0
+14/shapes = [  ]
+14/z_index = 0
+15/name = "RockPack128x128.png 15"
+15/texture = ExtResource( 4 )
+15/tex_offset = Vector2( 0, 0 )
+15/modulate = Color( 1, 1, 1, 1 )
+15/region = Rect2( 75, 91, 27, 30 )
+15/tile_mode = 0
+15/occluder_offset = Vector2( 0, 0 )
+15/navigation_offset = Vector2( 0, 0 )
+15/shape_offset = Vector2( 0, 0 )
+15/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+15/shape_one_way = false
+15/shape_one_way_margin = 0.0
+15/shapes = [  ]
+15/z_index = 0
+16/name = "RockPack128x128.png 16"
+16/texture = ExtResource( 4 )
+16/tex_offset = Vector2( 0, 0 )
+16/modulate = Color( 1, 1, 1, 1 )
+16/region = Rect2( 9, 83, 40, 25 )
+16/tile_mode = 0
+16/occluder_offset = Vector2( 0, 0 )
+16/navigation_offset = Vector2( 0, 0 )
+16/shape_offset = Vector2( 0, 0 )
+16/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+16/shape_one_way = false
+16/shape_one_way_margin = 0.0
+16/shapes = [  ]
+16/z_index = 0
+17/name = "RockPack128x128.png 17"
+17/texture = ExtResource( 4 )
+17/tex_offset = Vector2( 0, 0 )
+17/modulate = Color( 1, 1, 1, 1 )
+17/region = Rect2( 4, 44, 48, 30 )
+17/tile_mode = 0
+17/occluder_offset = Vector2( 0, 0 )
+17/navigation_offset = Vector2( 0, 0 )
+17/shape_offset = Vector2( 0, 0 )
+17/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+17/shape_one_way = false
+17/shape_one_way_margin = 0.0
+17/shapes = [  ]
+17/z_index = 0
+18/name = "RockPack128x128.png 18"
+18/texture = ExtResource( 4 )
+18/tex_offset = Vector2( 0, 0 )
+18/modulate = Color( 1, 1, 1, 1 )
+18/region = Rect2( 63, 0, 33, 24 )
+18/tile_mode = 0
+18/occluder_offset = Vector2( 0, 0 )
+18/navigation_offset = Vector2( 0, 0 )
+18/shape_offset = Vector2( 0, 0 )
+18/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+18/shape_one_way = false
+18/shape_one_way_margin = 0.0
+18/shapes = [  ]
+18/z_index = 0
+19/name = "RockPack128x128.png 19"
+19/texture = ExtResource( 4 )
+19/tex_offset = Vector2( 0, 0 )
+19/modulate = Color( 1, 1, 1, 1 )
+19/region = Rect2( 97, 1, 29, 22 )
+19/tile_mode = 0
+19/occluder_offset = Vector2( 0, 0 )
+19/navigation_offset = Vector2( 0, 0 )
+19/shape_offset = Vector2( 0, 0 )
+19/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+19/shape_one_way = false
+19/shape_one_way_margin = 0.0
+19/shapes = [  ]
+19/z_index = 0
+
+[sub_resource type="Shader" id=38]
+code = "/*
+Shader from Godot Shaders - the free shader library.
+godotshaders.com/shader/2d-waterfall
+
+Feel free to improve and change this shader according to your needs
+and consider sharing the modified result on godotshaders.com.
+*/
+
+shader_type canvas_item;
+
+uniform vec2 scale; // Used for sprite script. Don't edit this value in the inspector.
+uniform float zoom; // Used for sprite script. Don't edit this value in the inspector.
+
+uniform sampler2D refraction_map;
+uniform sampler2D water_mask;
+
+uniform vec2 gap_stretch = vec2(0.8, 0.05);
+uniform vec2 refraction_stretch = vec2(2.0, 0.8);
+uniform float refraction_strength : hint_range(0.0, 0.1) = 0.02;
+
+uniform vec4 water_tint : hint_color = vec4(0.2, 0.6, 1.0, 0.1);
+uniform vec4 water_highlight : hint_color = vec4(1.0, 1.0, 1.0, 0.3);
+uniform float speed = 1.0;
+uniform float flow_gaps : hint_range(0.0, 1.0) = 0.33;
+uniform float highlight_width : hint_range(0.0, 0.3) = 0.02;
+
+void fragment()
+{
+	// Get the two noise textures and make them move on the y axis. The gaps move twice as fast as the refraction, but you can tweak this by changing (speed * 0.5)
+	vec2 refraction_offset = texture(refraction_map, vec2(UV.x, UV.y + -TIME * speed * 0.5) * scale * refraction_stretch).xy;
+	vec2 gap_mask = texture(water_mask, vec2(UV.x, UV.y + -TIME * speed) * scale * gap_stretch).xy;
+	
+	// Set values between -0.5 and 0.5 (instead of 0 and 1). Otherwise the reflection will move whith increased refraction_strength
+	refraction_offset -= 0.5; 
+	
+	// Get the screen texture and distort it
+	vec4 refraction = texture(SCREEN_TEXTURE, SCREEN_UV - refraction_offset * refraction_strength * zoom);
+	
+	
+	// Create holes and apply colors and textures //
+	
+	vec4 color = vec4(1.0);
+	
+	// Define what values will be the water highlight color (the gap border)
+	float inner_edge = flow_gaps + highlight_width;
+	
+	// See if the pixel is within the edges range and use the water colors alpha to blend between showing color or refraction texture.
+	if (gap_mask.x < inner_edge)
+	{
+		color.rgb = mix(refraction.rgb, water_highlight.rgb, water_highlight.a);
+	}
+	else
+	{
+		color.rgb = mix(refraction.rgb, water_tint.rgb, water_tint.a);
+	}
+	
+	// If the value is below the gap threshhold make it transparent (a gap)
+	if (gap_mask.x < flow_gaps)
+	{
+		color.a = 0.0;
+	}
+	
+	
+	// Crate Edge Shape //
+	
+	// Set the shape for the top and bottom edges. Use water_mask as shape but with other values to flatten it out horizontally. 
+	vec2 water_edge = texture(water_mask, vec2(UV.x, UV.y + -TIME * 0.1) * scale * vec2(0.15, 0.6)).xy;
+	water_edge -= 0.5;
+	
+	// Use the same mask as for the gaps for left and right edge.
+	vec2 vertical_edge_mask = gap_mask - 0.5;
+	
+	// Apply the new masks to the edges. This will make the wobble effect.
+	color.a = mix(0.0, color.a, step(UV.x + vertical_edge_mask.x * 0.2, 0.92)); // Right edge
+	color.a = mix(color.a, 0.0, step(UV.x - vertical_edge_mask.x * 0.2, 0.08)); // Left edge
+	
+	color.a = mix(0.0, color.a, step(UV.y + water_edge.y * 0.1, 0.95));  //Bottom edge
+	color.a = mix(color.a, 0.0, step(UV.y - water_edge.y * 0.05, 0.05)); //Top edge
+	
+	COLOR = color;
+}"
+
+[sub_resource type="OpenSimplexNoise" id=43]
+
+[sub_resource type="NoiseTexture" id=39]
+width = 2187
+height = 1144
+seamless = true
+noise = SubResource( 43 )
+noise_offset = Vector2( 0.438, 0.213 )
+
+[sub_resource type="OpenSimplexNoise" id=44]
+
+[sub_resource type="NoiseTexture" id=40]
+width = 607
+height = 570
+seamless = true
+noise = SubResource( 44 )
+
+[sub_resource type="ShaderMaterial" id=45]
+shader = SubResource( 38 )
+shader_param/scale = Vector2( 1.14, 1 )
+shader_param/zoom = 1.05946
+shader_param/gap_stretch = Vector2( 1.336, 0.364 )
+shader_param/refraction_stretch = Vector2( -0.622, -0.645 )
+shader_param/refraction_strength = 0.022
+shader_param/water_tint = Color( 0.364706, 0.741176, 1, 0.792157 )
+shader_param/water_highlight = Color( 1, 1, 1, 1 )
+shader_param/speed = 2.31
+shader_param/flow_gaps = 0.23
+shader_param/highlight_width = 0.144
+shader_param/refraction_map = SubResource( 39 )
+shader_param/water_mask = SubResource( 40 )
+
+[sub_resource type="Shader" id=37]
+code = "/*
+Shader from Godot Shaders - the free shader library.
+godotshaders.com/shader/god-rays
+
+Feel free to use, improve and change this shader according to your needs
+and consider sharing the modified result on godotshaders.com.
+*/
+
+shader_type canvas_item;
+
+uniform float angle = -0.3;
+uniform float position = -0.2;
+uniform float spread : hint_range(0.0, 1.0) = 0.5;
+uniform float cutoff : hint_range(-1.0, 1.0) = 0.1;
+uniform float falloff : hint_range(0.0, 1.0) = 0.2;
+uniform float edge_fade : hint_range(0.0, 1.0) = 0.15;
+
+uniform float speed = 1.0;
+uniform float ray1_density = 8.0;
+uniform float ray2_density = 30.0;
+uniform float ray2_intensity : hint_range(0.0, 1.0) = 0.3;
+
+uniform vec4 color : hint_color = vec4(1.0, 0.9, 0.65, 0.8);
+
+uniform bool hdr = false;
+uniform float seed = 5.0;
+
+// Random and noise functions from Book of Shader's chapter on Noise.
+float random(vec2 _uv) {
+    return fract(sin(dot(_uv.xy,
+                         vec2(12.9898, 78.233))) *
+        43758.5453123);
+}
+
+float noise (in vec2 uv) {
+    vec2 i = floor(uv);
+    vec2 f = fract(uv);
+
+    // Four corners in 2D of a tile
+    float a = random(i);
+    float b = random(i + vec2(1.0, 0.0));
+    float c = random(i + vec2(0.0, 1.0));
+    float d = random(i + vec2(1.0, 1.0));
+
+
+    // Smooth Interpolation
+
+    // Cubic Hermine Curve. Same as SmoothStep()
+    vec2 u = f * f * (3.0-2.0 * f);
+
+    // Mix 4 coorners percentages
+    return mix(a, b, u.x) +
+            (c - a)* u.y * (1.0 - u.x) +
+            (d - b) * u.x * u.y;
+}
+
+mat2 rotate(float _angle){
+    return mat2(vec2(cos(_angle), -sin(_angle)),
+                vec2(sin(_angle), cos(_angle)));
+}
+
+vec4 screen(vec4 base, vec4 blend){
+	return 1.0 - (1.0 - base) * (1.0 - blend);
+}
+
+void fragment()
+{
+	
+	// Rotate, skew and move the UVs
+	vec2 transformed_uv = ( rotate(angle) * (UV - position) )  / ( (UV.y + spread) - (UV.y * spread) );
+	
+	// Animate the ray according the the new transformed UVs
+	vec2 ray1 = vec2(transformed_uv.x * ray1_density + sin(TIME * 0.1 * speed) * (ray1_density * 0.2) + seed, 1.0);
+	vec2 ray2 = vec2(transformed_uv.x * ray2_density + sin(TIME * 0.2 * speed) * (ray1_density * 0.2) + seed, 1.0);
+	
+	// Cut off the ray's edges
+	float cut = step(cutoff, transformed_uv.x) * step(cutoff, 1.0 - transformed_uv.x);
+	ray1 *= cut;
+	ray2 *= cut;
+	
+	// Apply the noise pattern (i.e. create the rays)
+	float rays;
+	
+	if (hdr){
+		// This is not really HDR, but check this to not clamp the two merged rays making 
+		// their values go over 1.0. Can make for some nice effect
+		rays = noise(ray1) + (noise(ray2) * ray2_intensity);
+	}
+	else{
+		 rays = clamp(noise(ray1) + (noise(ray2) * ray2_intensity), 0., 1.);
+	}
+	
+	// Fade out edges
+	rays *= smoothstep(0.0, falloff, (1.0 - UV.y)); // Bottom
+	rays *= smoothstep(0.0 + cutoff, edge_fade + cutoff, transformed_uv.x); // Left
+	rays *= smoothstep(0.0 + cutoff, edge_fade + cutoff, 1.0 - transformed_uv.x); // Right
+	
+	// Color to the rays
+	vec3 shine = vec3(rays) * color.rgb;
+
+	// Try different blending modes for a nicer effect. \"Screen\" is included in the code,
+	// but take a look at https://godotshaders.com/snippet/blending-modes/ for more.
+	// With \"Screen\" blend mode:
+	shine = screen(texture(SCREEN_TEXTURE, SCREEN_UV), vec4(color)).rgb;
+	
+	COLOR = vec4(shine, rays * color.a);
+}"
+
+[sub_resource type="ShaderMaterial" id=46]
+shader = SubResource( 37 )
+shader_param/angle = 0.958
+shader_param/position = 0.318
+shader_param/spread = 0.148
+shader_param/cutoff = -0.042
+shader_param/falloff = 0.125
+shader_param/edge_fade = 0.09
+shader_param/speed = 1.16
+shader_param/ray1_density = 8.0
+shader_param/ray2_density = 30.0
+shader_param/ray2_intensity = 0.3
+shader_param/color = Color( 0.862745, 0.976471, 0.470588, 0.631373 )
+shader_param/hdr = false
+shader_param/seed = 5.266
+
+[sub_resource type="Animation" id=47]
+resource_name = "BotoNadaIara"
+length = 12.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("CasaLago/Colisões/BotoNadando/Boto:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 2, 2.5, 3, 3.5, 3.9, 4.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 2, 3, 2, 3, 2, 3 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CasaLago/Colisões/BotoNadando/Boto:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 2.1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 8 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("CasaLago/Colisões/BotoNadando/Boto:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 2.1, 10.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 139.796, 22.3673 ), Vector2( 837.377, 69.8979 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("CasaLago/Colisões/BotoNadando/BotoPelado:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 2.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("CasaLago/Colisões/BotoNadando/Player:hframes")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 16 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("CasaLago/Colisões/BotoNadando/Player:frame")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 8, 9, 9, 10 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("CasaLago/Colisões/BotoNadando/Player:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 1.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 138.398, -29.3571 ), Vector2( 138.398, 2.7959 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("CasaLago/Colisões/BotoNadando/Player:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 2.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("CasaLago/Colisões/BotoNadando/Boto:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 2.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Camera2D:zoom")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 2.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.5, 0.5 ), Vector2( 0.5, 0.5 ) ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Camera2D:offset")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0, 2.1, 10.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 500, 18.889 ) ]
+}
+
+[sub_resource type="Animation" id=48]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("CasaLago/Colisões/BotoNadando/Boto:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 3 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CasaLago/Colisões/BotoNadando/Boto:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 8 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("CasaLago/Colisões/BotoNadando/Boto:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 837.377, 69.8979 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("CasaLago/Colisões/BotoNadando/BotoPelado:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("CasaLago/Colisões/BotoNadando/Player:hframes")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 16 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("CasaLago/Colisões/BotoNadando/Player:frame")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 8 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("CasaLago/Colisões/BotoNadando/Player:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 138.398, -29.3571 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("CasaLago/Colisões/BotoNadando/Player:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("CasaLago/Colisões/BotoNadando/Boto:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Camera2D:zoom")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0.5, 0.5 ) ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Camera2D:offset")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[node name="Cenarioiara2" type="Node2D"]
+script = ExtResource( 13 )
+
+[node name="Lagoa" type="Sprite" parent="."]
+material = SubResource( 41 )
+position = Vector2( 118.82, 254.418 )
+scale = Vector2( 1.94851, 1.32509 )
+texture = ExtResource( 11 )
+
+[node name="Sombras" type="Node2D" parent="."]
+
+[node name="SombraPedra" type="Polygon2D" parent="Sombras"]
+position = Vector2( 526, 155 )
+color = Color( 0, 0, 0, 0.313726 )
+offset = Vector2( -55, -84 )
+polygon = PoolVector2Array( 25, 81, 15, 81, 14, 83, 16, 84, 84.3577, 84, 88, 83, 88, 80, 84, 80 )
+
+[node name="SombraPedra2" type="Polygon2D" parent="Sombras"]
+position = Vector2( 460, 115 )
+color = Color( 0, 0, 0, 0.313726 )
+offset = Vector2( -55, -84 )
+polygon = PoolVector2Array( 31, 83, 15, 83, 14, 84, 16, 85, 30, 85, 47, 85, 48, 84, 47, 83 )
+
+[node name="SombraPedra3" type="Polygon2D" parent="Sombras"]
+position = Vector2( 333, 262 )
+color = Color( 0, 0, 0, 0.313726 )
+offset = Vector2( -55, -84 )
+polygon = PoolVector2Array( 25, 81, 15, 81, 15, 82, 16, 83, 17, 83, 32, 83, 53, 83, 54, 82, 52, 81 )
+
+[node name="SombraPedra4" type="Polygon2D" parent="Sombras"]
+position = Vector2( 253, 198 )
+color = Color( 0, 0, 0, 0.313726 )
+offset = Vector2( -55, -84 )
+polygon = PoolVector2Array( 25, 81, 15, 81, 15, 82, 16, 83, 17, 83, 32, 83, 53, 83, 54, 82, 52, 81 )
+
+[node name="SombraPedra5" type="Polygon2D" parent="Sombras"]
+position = Vector2( 589, 230 )
+color = Color( 0, 0, 0, 0.313726 )
+offset = Vector2( -55, -84 )
+polygon = PoolVector2Array( 25, 81, 15, 81, 15, 82, 16, 83, 17, 83, 32, 83, 53, 83, 54, 82, 52, 81 )
+
+[node name="SombraPedra6" type="Polygon2D" parent="Sombras"]
+position = Vector2( 444, 67 )
+color = Color( 0, 0, 0, 0.313726 )
+offset = Vector2( -55, -84 )
+polygon = PoolVector2Array( 25, 81, 15, 81, 15, 82, 16, 83, 17, 83, 32, 83, 42, 83, 44, 82, 44, 81 )
+
+[node name="SombraPedra7" type="Polygon2D" parent="Sombras"]
+position = Vector2( -110, 125 )
+color = Color( 0, 0, 0, 0.313726 )
+offset = Vector2( 194, 66 )
+polygon = PoolVector2Array( 25, 81, 15, 81, 15, 82, 16, 83, 17, 83, 32, 83, 41, 83, 42, 82, 42, 81 )
+
+[node name="SombraPedra8" type="Polygon2D" parent="Sombras"]
+position = Vector2( 242, 141 )
+color = Color( 0, 0, 0, 0.313726 )
+offset = Vector2( 194, 66 )
+polygon = PoolVector2Array( 25, 81, 15, 81, 15, 82, 16, 83, 17, 83, 32, 83, 41, 83, 42, 82, 42, 81 )
+
+[node name="SombraPedra9" type="Polygon2D" parent="Sombras"]
+position = Vector2( 184, 107 )
+color = Color( 0, 0, 0, 0.313726 )
+offset = Vector2( 194, 66 )
+polygon = PoolVector2Array( 25, 81, 16, 81, 15, 81, 15, 80, 14, 80, 14, 79, 11, 79, 10, 81, 11, 83, 16, 83, 17, 83, 32, 83, 41, 83, 43, 83, 45, 82, 45, 81, 43, 80, 43, 81 )
+
+[node name="SombraPedra10" type="Polygon2D" parent="Sombras"]
+position = Vector2( 322, 133 )
+color = Color( 0, 0, 0, 0.313726 )
+offset = Vector2( 194, 66 )
+polygon = PoolVector2Array( 25, 81, 15, 81, 15, 82, 16, 83, 17, 83, 32, 83, 43, 83, 44, 82, 44, 81 )
+
+[node name="SombraPedra11" type="Polygon2D" parent="Sombras"]
+position = Vector2( 352, 37 )
+color = Color( 0, 0, 0, 0.313726 )
+offset = Vector2( 194, 66 )
+polygon = PoolVector2Array( 25, 81, 20, 81, 19, 82, 17, 83, 32, 83, 43, 83, 44, 82, 43, 79, 40, 79, 38, 79, 37, 81 )
+
+[node name="SombraPedra12" type="Polygon2D" parent="Sombras"]
+position = Vector2( -65, -91 )
+color = Color( 0, 0, 0, 0.313726 )
+offset = Vector2( 194, 66 )
+polygon = PoolVector2Array( 25, 81, 20, 81, 19, 82, 17, 83, 32, 83, 43, 83, 44, 82, 43, 79, 40, 79, 38, 79, 37, 81 )
+
+[node name="SombraPedra13" type="Polygon2D" parent="Sombras"]
+position = Vector2( -158, -62 )
+color = Color( 0, 0, 0, 0.313726 )
+offset = Vector2( 194, 66 )
+polygon = PoolVector2Array( 25, 81, 16, 81, 16, 82, 17, 83, 18, 83, 32, 83, 33, 83, 35, 82, 34, 81 )
+
+[node name="SombraPedraCachoeira" type="Polygon2D" parent="Sombras"]
+position = Vector2( 4897.9, 974.999 )
+scale = Vector2( 8.84211, 9.99999 )
+color = Color( 0, 0, 0, 0.313726 )
+offset = Vector2( -517, -174 )
+polygon = PoolVector2Array( 32.9643, 80.5, 18.6012, 78.7, 16.1131, 78.8, 16, 79.0591, 16.1131, 80.7, 16.9048, 81.9, 17.5834, 82.7, 18.6012, 83, 32, 83, 33, 83 )
+
+[node name="SombraDeckCasa" type="Polygon2D" parent="Sombras"]
+position = Vector2( -266, 227 )
+scale = Vector2( 8.84211, 9.99999 )
+color = Color( 0, 0, 0, 0.313726 )
+offset = Vector2( -4.56573, -91.7999 )
+polygon = PoolVector2Array( 22.0955, 75.8999, 21.0776, 76.3999, 21.0776, 79.3999, 17.2324, 79.5999, 17.2322, 80.9999, 17.1193, 83.2999, 19.1548, 83.2999, 20.512, 83.2999, 21.0775, 83.8999, 33.2919, 83.8999, 33.405, 83.4999, 33.2919, 76.3999, 33.1788, 75.8999, 32.7264, 75.7999, 32.2741, 75.8999 )
+
+[node name="SombraBaseCasa" type="Polygon2D" parent="Sombras"]
+position = Vector2( -331, -8 )
+scale = Vector2( 0.875, 1 )
+color = Color( 0, 0, 0, 0.505882 )
+offset = Vector2( 194, 66 )
+polygon = PoolVector2Array( 15.1429, 80, 14.8572, 82, 15.1429, 83, 17.4286, 84, 19.7144, 84, 23.1429, 84, 25.4286, 83, 25.4286, 82, 25.4286, 81, 24.2858, 80 )
+
+[node name="SombraBaseCasa2" type="Polygon2D" parent="Sombras"]
+position = Vector2( -307.568, -8 )
+scale = Vector2( 0.945947, 1 )
+color = Color( 0, 0, 0, 0.505882 )
+offset = Vector2( 194, 66 )
+polygon = PoolVector2Array( 15.1429, 80, 14.8572, 82, 15.1429, 83, 17.4286, 84, 19.7144, 84, 23.1429, 84, 25.4286, 83, 25.4286, 82, 25.4286, 81, 24.2858, 80 )
+
+[node name="SombraBaseCasa3" type="Polygon2D" parent="Sombras"]
+position = Vector2( -231.568, -9 )
+scale = Vector2( 0.945946, 1 )
+color = Color( 0, 0, 0, 0.505882 )
+offset = Vector2( 194, 66 )
+polygon = PoolVector2Array( 15.1429, 80, 14.8572, 82, 15.1429, 83, 16.9714, 85, 20.1428, 85, 23.3143, 85, 25.4286, 83, 25.4286, 82, 25.4286, 81, 24.2858, 80 )
+
+[node name="Predas" type="TileMap" parent="."]
+position = Vector2( 500, 27 )
+tile_set = SubResource( 42 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( -131073, 536870931, 0, -196608, 17, 0, -196606, 536870930, 0, -196605, 18, 0, -196603, 536870926, 0, -65537, 15, 0, -131072, 19, 0, -131071, 536870928, 0, -131070, 16, 0, -131069, 536870927, 0, -131068, 15, 0, -131067, 18, 0, -131066, 13, 0, -2, 19, 0, -1, 16, 0, -65536, 17, 0, -65535, 536870929, 0, -65533, 536870927, 0, -65532, -1073741808, 0, -65531, 536870930, 0, -65530, 1610612749, 0, 65514, 14, 0, 65535, 536870930, 0, 0, 536870927, 0, 1, 536870926, 0, 2, 536870928, 0, 3, 14, 0, 4, 536870929, 0, 6, 15, 0, 131066, 19, 0, 262116, 10, 0, 327675, 18, 0, 458751, 14, 0, 393216, 536870929, 0, 393218, 15, 0, 524292, 14, 0, 655342, 16, 0, 720899, 16, 0, 917491, 16, 0, 917497, 12, 0, 983015, 13, 0, 917506, 15, 0, 1048573, 13, 0 )
+
+[node name="ParticulaCachoeira" type="CPUParticles2D" parent="."]
+position = Vector2( 541, 77 )
+rotation = -1.59967
+scale = Vector2( 0.0871457, 0.243239 )
+amount = 30
+speed_scale = 1.74
+texture = ExtResource( 9 )
+
+[node name="Cachoeira" type="Sprite" parent="."]
+material = SubResource( 45 )
+position = Vector2( 547, 39 )
+scale = Vector2( 0.953126, 1.42188 )
+texture = ExtResource( 12 )
+script = ExtResource( 1 )
+
+[node name="CasaLago" type="Sprite" parent="."]
+position = Vector2( -69, 91 )
+scale = Vector2( 0.173794, 0.173794 )
+texture = ExtResource( 7 )
+
+[node name="Colisões" type="StaticBody2D" parent="CasaLago"]
+
+[node name="ColisãoDeck" type="CollisionPolygon2D" parent="CasaLago/Colisões"]
+polygon = PoolVector2Array( -241.665, -115.079, -270.435, -109.325, -270.435, 74.8012, -414.283, 74.8012, -431.545, 80.5552, -448.807, 74.8012, -489.085, 80.5552, -489.085, 149.602, -477.577, 161.11, -477.577, 178.372, -483.331, 195.634, -489.085, 224.404, -460.315, 224.404, -454.561, 201.388, -448.807, 184.126, -448.807, 166.864, -431.545, 166.864, -414.283, 166.864, -408.53, 184.126, -402.776, 224.404, -235.911, 224.404, -230.157, 189.88, -224.404, 166.864, -212.896, 161.11, -201.388, 166.864, -189.88, 184.126, -189.88, 218.65, 207.142, 224.404, 207.142, 201.388, 212.896, 166.864, 235.911, 161.11, 247.419, 178.372, 253.173, 201.388, 253.173, 224.404, 287.697, 224.404, 281.943, -28.7697, 287.697, -28.7697, 293.451, 224.404, 293.451, 235.911, -500.593, 230.158, -500.593, 74.8012, -454.561, 63.2933, -281.943, 63.2933, -281.943, -126.587, -241.665, -126.587 )
+
+[node name="ColisãoCasa" type="CollisionPolygon2D" parent="CasaLago/Colisões"]
+polygon = PoolVector2Array( 264.681, 46.0315, -74.8013, 51.7855, -74.8013, 5.75391, -201.388, 5.75391, -201.388, 51.7855, -218.65, 51.7855, -218.65, 5.75391, -264.681, 5.75391, -270.435, -115.079, 264.681, -126.587 )
+
+[node name="BotoNadando" type="Node2D" parent="CasaLago/Colisões"]
+position = Vector2( -414.284, 149.602 )
+scale = Vector2( 4.11596, 4.11596 )
+
+[node name="Player" type="Sprite" parent="CasaLago/Colisões/BotoNadando"]
+visible = false
+position = Vector2( 138.398, -29.3571 )
+scale = Vector2( 0.182147, 0.148438 )
+texture = ExtResource( 2 )
+hframes = 16
+frame = 8
+
+[node name="Sombra tronco" type="Polygon2D" parent="CasaLago/Colisões/BotoNadando/Player"]
+position = Vector2( -10.9799, -26.9471 )
+scale = Vector2( 5.49007, 6.73682 )
+color = Color( 0, 0, 0, 0.313726 )
+offset = Vector2( -17, -56 )
+polygon = PoolVector2Array( 15, 70, 13, 71, 16, 75, 24, 76, 28, 74, 30, 72, 29, 70 )
+
+[node name="Boto" type="Sprite" parent="CasaLago/Colisões/BotoNadando"]
+position = Vector2( 837.377, 69.8979 )
+scale = Vector2( 0.223442, 0.223442 )
+texture = ExtResource( 10 )
+hframes = 8
+frame = 3
+
+[node name="BotoPelado" type="Sprite" parent="CasaLago/Colisões/BotoNadando"]
+position = Vector2( 141.194, 37.7449 )
+scale = Vector2( 0.0627569, 0.0627569 )
+texture = ExtResource( 5 )
+flip_h = true
+
+[node name="GodRays" type="ColorRect" parent="."]
+material = SubResource( 46 )
+margin_left = -558.0
+margin_top = -337.0
+margin_right = 681.0
+margin_bottom = 570.0
+rect_rotation = 4.67835
+
+[node name="SombraCasa" type="Polygon2D" parent="."]
+position = Vector2( -235, 217 )
+scale = Vector2( 8.8421, 9.99998 )
+color = Color( 0, 0, 0, 0.313726 )
+offset = Vector2( -4.56573, -91.7999 )
+polygon = PoolVector2Array( 21.8693, 76.8999, 19.2681, 78.8999, 13.8395, 83.3999, 16.3276, 83.3999, 16.6669, 83.2999, 17.4586, 83.2999, 17.5717, 83.3999, 21.4169, 83.3999, 21.6431, 83.2999, 23.6788, 83.2999, 23.905, 83.3999, 25.3752, 83.3999, 26.7324, 80.4999, 28.5419, 76.8999, 25.1491, 75.5999 )
+
+[node name="Iara" type="Node2D" parent="."]
+
+[node name="Iara2" type="Sprite" parent="Iara"]
+position = Vector2( 529, 118 )
+scale = Vector2( 0.0611767, 0.0611767 )
+texture = ExtResource( 6 )
+
+[node name="RaboIara" type="Sprite" parent="Iara"]
+position = Vector2( 536, 116 )
+scale = Vector2( 0.059932, 0.059932 )
+texture = ExtResource( 8 )
+
+[node name="porta" parent="." instance=ExtResource( 3 )]
+position = Vector2( -176, 35 )
+interact_label = "E"
+interact_type = "entracasaiara"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/BotoNadaIara = SubResource( 47 )
+anims/RESET = SubResource( 48 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( -67, 102 )
+current = true
+zoom = Vector2( 0.5, 0.5 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" parent="CanvasLayer" instance=ExtResource( 14 )]
+anchor_top = 1.0
+anchor_right = 0.018
+margin_left = 125.0
+margin_top = -186.0
+margin_right = 632.12
+margin_bottom = -155.0
+
+[connection signal="item_rect_changed" from="Cachoeira" to="Cachoeira" method="_on_Sprite_item_rect_changed"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

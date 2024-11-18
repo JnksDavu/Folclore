@@ -1,0 +1,58 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://addons/dialogue_nodes/objects/bbcodeWait.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogue_nodes/objects/dialogueBox.gd" type="Script" id=2]
+[ext_resource path="res://addons/Control.gd" type="Script" id=3]
+[ext_resource path="res://imgs/homem do saco/Homem do sacoFinal.png" type="Texture" id=4]
+[ext_resource path="res://imgs/Menino principal/MeninoPrincipal.png" type="Texture" id=5]
+[ext_resource path="res://secundarios/Thema Dialogos.tres" type="Theme" id=6]
+
+[sub_resource type="RichTextEffect" id=1]
+script = ExtResource( 1 )
+
+[node name="dialogo" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 7.0
+margin_top = -33.0
+margin_right = -66.0
+margin_bottom = -140.0
+script = ExtResource( 3 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="DialogueBox" type="PopupDialog" parent="TextureRect"]
+visible = true
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -269.5
+margin_top = 28.0
+margin_right = 328.5
+margin_bottom = 130.0
+rect_min_size = Vector2( 300, 72 )
+theme = ExtResource( 6 )
+popup_exclusive = true
+script = ExtResource( 2 )
+dialogue_file = "res://addons/teste.json"
+start_id = "teste"
+max_options = 2
+custom_effects = [ SubResource( 1 ) ]
+
+[node name="Sprite2" type="Sprite" parent="TextureRect/DialogueBox"]
+position = Vector2( 96, -96 )
+scale = Vector2( 0.177894, 0.182407 )
+texture = ExtResource( 5 )
+
+[node name="Sprite" type="Sprite" parent="TextureRect/DialogueBox"]
+position = Vector2( 480, -45 )
+scale = Vector2( 0.202246, 0.187269 )
+texture = ExtResource( 4 )
+
+[connection signal="dialogue_ended" from="TextureRect/DialogueBox" to="." method="_on_DialogueBox_dialogue_ended"]
+[connection signal="dialogue_proceeded" from="TextureRect/DialogueBox" to="." method="_on_DialogueBox_dialogue_proceeded"]
+[connection signal="dialogue_started" from="TextureRect/DialogueBox" to="." method="_on_DialogueBox_dialogue_started"]

@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/dialogue_nodes/objects/dialogueBox.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogue_nodes/objects/bbcodeWait.gd" type="Script" id=2]
+[ext_resource path="res://secundarios/Dialogo_Caipora.gd" type="Script" id=3]
+[ext_resource path="res://imgs/Menino principal/MeninoPrincipal.png" type="Texture" id=4]
+[ext_resource path="res://Personagens/Caipora (1).png" type="Texture" id=5]
+
+[sub_resource type="RichTextEffect" id=1]
+script = ExtResource( 2 )
+
+[node name="Dialogo_Caipora" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="DialogueBox" type="PopupDialog" parent="TextureRect"]
+visible = true
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 139.52
+margin_top = 196.0
+margin_right = 240.0
+margin_bottom = 297.12
+rect_min_size = Vector2( 300, 72 )
+popup_exclusive = true
+script = ExtResource( 1 )
+dialogue_file = "res://addons/Caipora.json"
+start_id = "Caipora"
+max_options = 2
+custom_effects = [ SubResource( 1 ) ]
+
+[node name="Sprite" type="Sprite" parent="TextureRect/DialogueBox"]
+position = Vector2( 282.48, -84 )
+scale = Vector2( 0.110845, 0.10575 )
+texture = ExtResource( 5 )
+
+[node name="Sprite2" type="Sprite" parent="TextureRect/DialogueBox"]
+position = Vector2( 33.48, -56 )
+scale = Vector2( 0.106384, 0.106481 )
+texture = ExtResource( 4 )
+
+[connection signal="dialogue_ended" from="TextureRect/DialogueBox" to="." method="_on_DialogueBox_dialogue_ended"]
