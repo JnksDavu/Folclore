@@ -21,3 +21,4 @@ func _on_DialogueBox_dialogue_ended():
 	var tree = get_tree()
 	var caipora = "res://cenas principais/CenarioCaipora.tscn"
 	tree.change_scene(caipora)
+	

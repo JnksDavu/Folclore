@@ -19,3 +19,6 @@ func _ready():
 func _on_DialogueBox_dialogue_ended():
 	set_physics_process(true)
 	var tree = get_tree()
+	var caipora = "res://cenas principais/CenarioCaipora.tscn"
+	tree.change_scene(caipora)
+	
