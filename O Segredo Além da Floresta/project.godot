@@ -59,7 +59,7 @@ window/stretch/aspect="keep"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/dialogue_nodes/plugin.cfg" )
+enabled=PoolStringArray(  )
 
 [input]
 
