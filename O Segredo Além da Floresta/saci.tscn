@@ -1,0 +1,197 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://secundarios/Thema Dialogos.tres" type="Theme" id=1]
+[ext_resource path="res://addons/dialogue_nodes/objects/bbcodeWait.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogue_nodes/objects/dialogueBox.gd" type="Script" id=3]
+[ext_resource path="res://imgs/Menino principal/MeninoPrincipal.png" type="Texture" id=4]
+[ext_resource path="res://Enemies/SaciFinal.png" type="Texture" id=5]
+
+[sub_resource type="RichTextEffect" id=1]
+script = ExtResource( 2 )
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_left = 0.457
+anchor_top = 0.759
+anchor_right = 0.457
+anchor_bottom = 0.759
+margin_left = -22.62
+margin_top = -37.603
+margin_right = 17.38
+margin_bottom = -23.603
+
+[node name="DialogueBox" type="PopupDialog" parent="TextureRect"]
+visible = true
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -183.0
+margin_top = 50.0
+margin_right = 240.0
+margin_bottom = 151.0
+rect_min_size = Vector2( 300, 72 )
+theme = ExtResource( 1 )
+popup_exclusive = true
+script = ExtResource( 3 )
+dialogue_file = "res://addons/Curapika.json"
+start_id = "Saci"
+max_options = 2
+custom_effects = [ SubResource( 1 ) ]
+
+[node name="Sprite" type="Sprite" parent="TextureRect/DialogueBox"]
+position = Vector2( 321, -72.817 )
+scale = Vector2( 0.197, 0.2 )
+texture = ExtResource( 5 )
+
+[node name="Sprite2" type="Sprite" parent="TextureRect/DialogueBox"]
+position = Vector2( 55.9999, -67 )
+scale = Vector2( 0.13258, 0.128241 )
+texture = ExtResource( 4 )
+
+[node name="MarginContainer" type="MarginContainer" parent="TextureRect/DialogueBox"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/DialogueBox/MarginContainer"]
+margin_right = 415.0
+margin_bottom = 93.0
+
+[node name="Label" type="Label" parent="TextureRect/DialogueBox/MarginContainer/VBoxContainer"]
+margin_right = 415.0
+margin_bottom = 14.0
+text = "Speaker"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TextureRect/DialogueBox/MarginContainer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 415.0
+margin_bottom = 73.0
+size_flags_vertical = 3
+bbcode_enabled = true
+bbcode_text = "Sample dialogue.
+Load a [u]dialogue file[/u]."
+text = "Sample dialogue.
+Load a dialogue file."
+scroll_following = true
+custom_effects = [ SubResource( 1 ) ]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect/DialogueBox/MarginContainer/VBoxContainer"]
+margin_top = 77.0
+margin_right = 415.0
+margin_bottom = 93.0
+alignment = 2
+
+[node name="Button" type="Button" parent="TextureRect/DialogueBox/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 295.0
+margin_right = 353.0
+margin_bottom = 16.0
+text = "Option 1"
+
+[node name="Button2" type="Button" parent="TextureRect/DialogueBox/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 357.0
+margin_right = 415.0
+margin_bottom = 16.0
+text = "Option 2"
+
+[node name="MarginContainer2" type="MarginContainer" parent="TextureRect/DialogueBox"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/DialogueBox/MarginContainer2"]
+margin_right = 415.0
+margin_bottom = 93.0
+
+[node name="Label" type="Label" parent="TextureRect/DialogueBox/MarginContainer2/VBoxContainer"]
+margin_right = 415.0
+margin_bottom = 14.0
+text = "Speaker"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TextureRect/DialogueBox/MarginContainer2/VBoxContainer"]
+margin_top = 18.0
+margin_right = 415.0
+margin_bottom = 73.0
+size_flags_vertical = 3
+bbcode_enabled = true
+bbcode_text = "Sample dialogue.
+Load a [u]dialogue file[/u]."
+text = "Sample dialogue.
+Load a dialogue file."
+scroll_following = true
+custom_effects = [ SubResource( 1 ) ]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect/DialogueBox/MarginContainer2/VBoxContainer"]
+margin_top = 77.0
+margin_right = 415.0
+margin_bottom = 93.0
+alignment = 2
+
+[node name="Button" type="Button" parent="TextureRect/DialogueBox/MarginContainer2/VBoxContainer/HBoxContainer"]
+margin_left = 295.0
+margin_right = 353.0
+margin_bottom = 16.0
+text = "Option 1"
+
+[node name="Button2" type="Button" parent="TextureRect/DialogueBox/MarginContainer2/VBoxContainer/HBoxContainer"]
+margin_left = 357.0
+margin_right = 415.0
+margin_bottom = 16.0
+text = "Option 2"
+
+[node name="MarginContainer3" type="MarginContainer" parent="TextureRect/DialogueBox"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/DialogueBox/MarginContainer3"]
+margin_right = 415.0
+margin_bottom = 93.0
+
+[node name="Label" type="Label" parent="TextureRect/DialogueBox/MarginContainer3/VBoxContainer"]
+margin_right = 415.0
+margin_bottom = 14.0
+text = "Speaker"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TextureRect/DialogueBox/MarginContainer3/VBoxContainer"]
+margin_top = 18.0
+margin_right = 415.0
+margin_bottom = 73.0
+size_flags_vertical = 3
+bbcode_enabled = true
+bbcode_text = "Sample dialogue.
+Load a [u]dialogue file[/u]."
+text = "Sample dialogue.
+Load a dialogue file."
+scroll_following = true
+custom_effects = [ SubResource( 1 ) ]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect/DialogueBox/MarginContainer3/VBoxContainer"]
+margin_top = 77.0
+margin_right = 415.0
+margin_bottom = 93.0
+alignment = 2
+
+[node name="Button" type="Button" parent="TextureRect/DialogueBox/MarginContainer3/VBoxContainer/HBoxContainer"]
+margin_left = 295.0
+margin_right = 353.0
+margin_bottom = 16.0
+text = "Option 1"
+
+[node name="Button2" type="Button" parent="TextureRect/DialogueBox/MarginContainer3/VBoxContainer/HBoxContainer"]
+margin_left = 357.0
+margin_right = 415.0
+margin_bottom = 16.0
+text = "Option 2"

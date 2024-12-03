@@ -1877,7 +1877,7 @@ tracks/1/keys = {
 }
 
 [node name="Quarto" type="Node2D"]
-position = Vector2( -2, 0 )
+position = Vector2( -3, 0 )
 scale = Vector2( 0.720526, 0.761554 )
 script = ExtResource( 12 )
 

@@ -16,6 +16,7 @@ onready var all_interactions = []
 onready var interact_label = $"interactioncomponenets/label interacap"
 onready var cu_interaction = 0
 onready var light: Light2D = $Lanterna
+onready var lastInput=Vector2.ZERO
 
 var zona_interacao := false
 
@@ -27,11 +28,13 @@ func _physics_process(delta):
 	input_vetor = input_vetor.normalized()
 	
 	if input_vetor != Vector2.ZERO:
+		lastInput=input_vetor
 		animationtree.set("parameters/Correr/blend_position", input_vetor)
-		animationtree.set("parameters/Idle/blend_position", input_vetor)
 		animationState.travel("Correr")
 		VELOCIDADE = VELOCIDADE.move_toward(input_vetor * VELO_MAX, ACELERACAO * delta)
 	else:
+		animationtree.set("parameters/Idle/blend_position", lastInput)
+		animationtree.set("parameters/Idle/blend_position", lastInput)
 		animationState.travel("Idle")
 		VELOCIDADE = VELOCIDADE.move_toward(Vector2.ZERO, FRICCAO * delta)
 	
@@ -146,7 +149,7 @@ func CenaBoto():
 	get_tree().change_scene("res://cenas principais/CenarioBoto.tscn")
 	
 func Saci():
-	get_tree().change_scene("res://batalha/batalha/batalha_saci/Battle_saci.tscn")
+	$CanvasLayer2/Dialogo_Saci/TextureRect/DialogueBox.start()
 	
 func Cuca():
 	get_tree().change_scene("res://batalha/batalha_cucas/Battle_cucaRA.tscn")
@@ -164,7 +167,8 @@ func entracasa():
 	get_tree().change_scene("res://cenas principais/Casa.tscn")
 	
 func saicasa():
-	get_tree().change_scene("res://Exterior.tscn") 
+	#get_tree().change_scene("res://Exterior.tscn") 
+	get_tree().change_scene("res://loading.tscn") 
 
 func entraquarto():
 	get_tree().change_scene("res://cenas principais/Quarto.tscn")

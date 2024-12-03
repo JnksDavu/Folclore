@@ -4,7 +4,7 @@ var score = 0
 var combo = 0
 
 
-var music_duration = 163 # Duração da música em segundos
+var music_duration = 60 # Duração da música em segundos
 
 var max_combo = 0
 var great = 0
@@ -178,7 +178,7 @@ func set_score(new):
 	
 func _on_Timer_timeout():
 	# Verifique se o jogador alcançou o número de pontos necessário
-	if score >= 3000:
+	if score >= 500:
 		get_tree().change_scene("res://cenas principais/DarkForest/DarkForest.tscn")
 	else:
-		get_tree().change_scene("res://cenas principais/BatalhaIara/Batalha.tscn")
+		get_tree().change_scene("res://cenas principais/Cenarioiara2.tscn")

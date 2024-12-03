@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=2]
+[gd_scene load_steps=61 format=2]
 
 [ext_resource path="res://Assets_exterior/Assets Pântano/Tileset.png" type="Texture" id=1]
 [ext_resource path="res://Assets_exterior/Assets Pântano/Decorations.png" type="Texture" id=2]
@@ -21,6 +21,7 @@
 [ext_resource path="res://Personagens/OverWorld/saci.png" type="Texture" id=19]
 [ext_resource path="res://Assets Casa/FundoCasa.jpg" type="Texture" id=20]
 [ext_resource path="res://componentes de jogo/interacoes.tscn" type="PackedScene" id=21]
+[ext_resource path="res://Dialogo_Saci.tscn" type="PackedScene" id=22]
 
 [sub_resource type="TileSet" id=17]
 0/name = "Tileset.png 0"
@@ -776,6 +777,7 @@ shader_param/offset = 0.0
 12/autotile/navpoly_map = [  ]
 12/autotile/priority_map = [  ]
 12/autotile/z_index_map = [  ]
+12/autotile/fallback_mode = 0
 12/occluder_offset = Vector2( 0, 0 )
 12/navigation_offset = Vector2( 0, 0 )
 12/shape_offset = Vector2( 0, 0 )
@@ -2899,6 +2901,17 @@ volume_db = -6.638
 [node name="Timer2" type="Timer" parent="BossFight/Profundidade/Player"]
 one_shot = true
 
+[node name="CanvasLayer2" type="CanvasLayer" parent="BossFight/Profundidade/Player"]
+
+[node name="Dialogo_Saci" parent="BossFight/Profundidade/Player/CanvasLayer2" instance=ExtResource( 22 )]
+margin_left = 2056.0
+margin_top = 644.0
+margin_right = 1849.0
+margin_bottom = 525.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
 [node name="Decoracao" type="TileMap" parent="BossFight/Profundidade"]
 tile_set = SubResource( 21 )
 cell_size = Vector2( 16, 16 )
@@ -2977,10 +2990,10 @@ rect_pivot_offset = Vector2( 407, 808.627 )
 
 [node name="GodRays8" type="ColorRect" parent="FaixosDeLuz"]
 material = SubResource( 36 )
-margin_left = -315.507
-margin_top = 541.642
-margin_right = 729.493
-margin_bottom = 1210.64
+margin_left = -313.507
+margin_top = 541.625
+margin_right = 731.493
+margin_bottom = 1210.62
 rect_rotation = 4.67835
 
 [node name="BarreiraMatagal" type="TileMap" parent="."]
@@ -3033,7 +3046,7 @@ interact_label = "E"
 interact_type = "caverna"
 
 [node name="interacoes" parent="." instance=ExtResource( 21 )]
-position = Vector2( 2017, 710 )
+position = Vector2( 2211, 704 )
 scale = Vector2( 2, 2 )
 interact_label = "E"
 interact_type = "Saci"

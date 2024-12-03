@@ -156,7 +156,7 @@ func enemy_turn():
 								if(current_player_health==0):
 									display_text("Seu inimigo te matou!")
 									yield(self,"textbox_closed")
-									get_tree().change_scene("res://cenas principais/CenarioCaipora.tscn")
+									get_tree().change_scene("res://cenas principais/DarkForest/DarkForest.tscn")
 							else:
 								energy_enemy = max(0,energy_enemy - energy_atack)
 								set_energy($EnemyData/Estamina,energy_enemy,enemy_energy)
@@ -167,7 +167,7 @@ func enemy_turn():
 								if(current_player_health==0):
 									display_text("Você MORREU!")
 									yield(self,"textbox_closed")
-									get_tree().change_scene("res://cenas principais/CenarioCaipora.tscn")
+									get_tree().change_scene("res://cenas principais/DarkForest/DarkForest.tscn")
 									
 				if(aleatorio == 2):
 					energy_atack = 40
@@ -197,7 +197,7 @@ func enemy_turn():
 								if(current_player_health==0):
 									display_text(" BOITATA te matou!")
 									yield(self,"textbox_closed")
-									get_tree().change_scene("res://cenas principais/CenarioCaipora.tscn")
+									get_tree().change_scene("res://cenas principais/DarkForest/DarkForest.tscn")
 							else:
 								energy_enemy = max(0,energy_enemy - energy_atack)
 								set_energy($EnemyData/Estamina,energy_enemy,enemy_energy)
@@ -208,7 +208,7 @@ func enemy_turn():
 								if(current_player_health==0):
 									display_text("Você MORREU!")
 									yield(self,"textbox_closed")
-									get_tree().change_scene("res://cenas principais/CenarioCaipora.tscn")		
+									get_tree().change_scene("res://cenas principais/DarkForest/DarkForest.tscn")		
 					
 				if(aleatorio == 3):
 					energy_atack = 15
@@ -238,7 +238,7 @@ func enemy_turn():
 								if(current_player_health==0):
 									display_text(" BOITATA te matou!")
 									yield(self,"textbox_closed")
-									get_tree().change_scene("res://cenas principais/CenarioCaipora.tscn")
+									get_tree().change_scene("res://cenas principais/DarkForest/DarkForest.tscn")
 							else:
 								energy_enemy = max(0,energy_enemy - energy_atack)
 								set_energy($EnemyData/Estamina,energy_enemy,enemy_energy)
@@ -249,7 +249,7 @@ func enemy_turn():
 								if(current_player_health==0):
 									display_text("Você MORREU!")
 									yield(self,"textbox_closed")
-									get_tree().change_scene("res://cenas principais/CenarioCaipora.tscn")
+									get_tree().change_scene("res://cenas principais/DarkForest/DarkForest.tscn")
 func _on_Ataque_pressed():
 	esconde_opcoes()
 	mostra_atack()
@@ -285,7 +285,7 @@ func _on_Ataque2_pressed():
 					if(current_enemy_health==0):
 							display_text(" BOITATA DERROTADA")
 							yield(self,"textbox_closed")
-							get_tree().change_scene("res://cenas principais/CenarioCaipora.tscn")
+							get_tree().change_scene("res://cenas principais/Menu.tscn")
 					else:
 						enemy_turn()
 						recarga_energia_aliado()
@@ -301,7 +301,7 @@ func _on_Ataque2_pressed():
 
 							display_text(" BOITATA DERROTADA")
 							yield(self,"textbox_closed")
-							get_tree().change_scene("res://cenas principais/CenarioCaipora.tscn")
+							get_tree().change_scene("res://cenas principais/Menu.tscn")
 					else:
 						enemy_turn()
 						recarga_energia_aliado()
@@ -338,7 +338,7 @@ func _on_Ataque1_pressed():
 					if(current_enemy_health==0):
 							display_text(" BOITATA DERROTADA")
 							yield(self,"textbox_closed")
-							get_tree().change_scene("res://cenas principais/CenarioCaipora.tscn")
+							get_tree().change_scene("res://cenas principais/Menu.tscn")
 					else:
 						enemy_turn()
 						recarga_energia_aliado()
@@ -352,7 +352,7 @@ func _on_Ataque1_pressed():
 					if(current_enemy_health==0):
 							display_text(" BOITATA DERROTADA")
 							yield(self,"textbox_closed")
-							get_tree().change_scene("res://cenas principais/CenarioCaipora.tscn")
+							get_tree().change_scene("res://cenas principais/Menu.tscn")
 					else:
 						enemy_turn()
 						recarga_energia_aliado()
@@ -393,7 +393,7 @@ func _on_Ataque4_pressed():
 				if(current_enemy_health==0):
 							display_text(" BOITATA DERROTADA")
 							yield(self,"textbox_closed")
-							get_tree().change_scene("res://cenas principais/CenarioCaipora.tscn")
+							get_tree().change_scene("res://cenas principais/Menu.tscn")
 							
 				else:
 					enemy_turn()
@@ -408,7 +408,7 @@ func _on_Ataque4_pressed():
 				if(current_enemy_health==0):
 							display_text(" BOITATA DERROTADA")
 							yield(self,"textbox_closed")
-							get_tree().change_scene("res://cenas principais/CenarioCaipora.tscn")
+							get_tree().change_scene("res://cenas principais/Menu.tscn")
 				else:
 					enemy_turn()
 					recarga_energia_aliado()
@@ -446,7 +446,7 @@ func _on_Ataque3_pressed():
 				if(current_enemy_health==0):
 							display_text(" BOITATA DERROTADA")
 							yield(self,"textbox_closed")
-							get_tree().change_scene("res://cenas principais/Casa.tscn")
+							get_tree().change_scene("res://cenas principais/Menu.tscn")
 				else:
 					enemy_turn()
 					recarga_energia_aliado()
@@ -460,7 +460,7 @@ func _on_Ataque3_pressed():
 				if(current_enemy_health==0):
 							display_text(" BOITATA DERROTADA")
 							yield(self,"textbox_closed")
-							get_tree().change_scene("res://cenas principais/Casa.tscn")
+							get_tree().change_scene("res://cenas principais/Menu.tscn")
 				else:
 					enemy_turn()
 					recarga_energia_aliado()

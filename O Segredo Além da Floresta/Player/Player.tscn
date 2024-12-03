@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=2]
+[gd_scene load_steps=52 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/New_Sprite.png" type="Texture" id=2]
@@ -370,10 +370,10 @@ max_space = Vector2( 1, 1.1 )
 blend_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id=11]
-animation = "idleesquerda"
+animation = "Idle"
 
 [sub_resource type="AnimationNodeAnimation" id=12]
-animation = "Idle"
+animation = "idleesquerda"
 
 [sub_resource type="AnimationNodeAnimation" id=13]
 animation = "idlebaixo"
@@ -381,29 +381,49 @@ animation = "idlebaixo"
 [sub_resource type="AnimationNodeAnimation" id=14]
 animation = "idlecima"
 
+[sub_resource type="AnimationNodeAnimation" id=41]
+animation = "idlebaixo"
+
+[sub_resource type="AnimationNodeAnimation" id=42]
+animation = "idlebaixo"
+
+[sub_resource type="AnimationNodeAnimation" id=43]
+animation = "idlecima"
+
+[sub_resource type="AnimationNodeAnimation" id=44]
+animation = "Idle"
+
+[sub_resource type="AnimationNodeAnimation" id=45]
+animation = "idleesquerda"
+
 [sub_resource type="AnimationNodeBlendSpace2D" id=15]
 blend_point_0/node = SubResource( 11 )
-blend_point_0/pos = Vector2( -1, 0 )
+blend_point_0/pos = Vector2( -1.1, 0 )
 blend_point_1/node = SubResource( 12 )
-blend_point_1/pos = Vector2( 1, 0 )
+blend_point_1/pos = Vector2( 1.1, 0 )
 blend_point_2/node = SubResource( 13 )
 blend_point_2/pos = Vector2( 0, 1.1 )
 blend_point_3/node = SubResource( 14 )
 blend_point_3/pos = Vector2( 0, -1.1 )
-min_space = Vector2( -1, -1.1 )
-max_space = Vector2( 1, 1.1 )
+blend_point_4/node = SubResource( 41 )
+blend_point_4/pos = Vector2( 0, -1.1 )
+blend_point_5/node = SubResource( 42 )
+blend_point_5/pos = Vector2( 0, -0.7 )
+blend_point_6/node = SubResource( 43 )
+blend_point_6/pos = Vector2( 0, 0.7 )
+blend_point_7/node = SubResource( 44 )
+blend_point_7/pos = Vector2( -0.9, 0 )
+blend_point_8/node = SubResource( 45 )
+blend_point_8/pos = Vector2( 0.9, 0 )
+min_space = Vector2( -1.1, -1.1 )
+max_space = Vector2( 1.1, 1.1 )
 blend_mode = 1
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=23]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=24]
 
 [sub_resource type="AnimationNodeStateMachine" id=16]
 states/Correr/node = SubResource( 22 )
-states/Correr/position = Vector2( 792, 166 )
+states/Correr/position = Vector2( 785, 149 )
 states/Idle/node = SubResource( 15 )
-states/Idle/position = Vector2( 635, 166 )
-transitions = [ "Idle", "Correr", SubResource( 23 ), "Correr", "Idle", SubResource( 24 ) ]
+states/Idle/position = Vector2( 606, 149 )
 start_node = "Idle"
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=17]
@@ -483,7 +503,7 @@ anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 17 )
 parameters/Correr/blend_position = Vector2( 0, 0 )
-parameters/Idle/blend_position = Vector2( -0.0031696, 1.1 )
+parameters/Idle/blend_position = Vector2( -0.0031696, 0 )
 
 [node name="interactioncomponenets" type="Node2D" parent="."]
 position = Vector2( 0, 6 )
